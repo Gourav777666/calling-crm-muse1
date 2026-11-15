@@ -1,0 +1,7 @@
+// Production DB - run: npx prisma migrate dev ; set DATABASE_URL in Vercel
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+enum Role { admin caller }
+model User { id String @id @default(cuid()); loginId String @unique; passwordHash String; name String; role Role; status String @default("active"); quota Int @default(50); loginAt DateTime?; logoutAt DateTime?; lastSeen DateTime?; presence String @default("Offline"); createdAt DateTime @default(now()); leads Lead[]; logs CallLog[] }
+model Lead { id String @id @default(cuid()); name String; phone String @unique; campaign String @default("General"); status String @default("New"); assignedTo String?; assignee User? @relation(fields: [assignedTo], references: [id]); callbackAt DateTime?; createdAt DateTime @default(now()); logs CallLog[] }
+model CallLog { id String @id @default(cuid()); lead Lead @relation(fields: [leadId], references: [id]); leadId String; caller User @relation(fields: [callerId], references: [id]); callerId String; disposition String; remarks String @default(""); durationSec Int @default(0); recordingName String?; recordingUrl String?; callbackAt DateTime?; createdAt DateTime @default(now()) }

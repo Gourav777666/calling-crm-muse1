@@ -1,3 +1,2 @@
-export default function Header() {
-  return <header style={{ padding: "20px 0" }}><h1 style={{ margin: 0, fontSize: 28 }}>Calling CRM</h1><p style={{ color: "#666", margin: "4px 0 0" }}>Leads ko call karo, status track karo</p></header>;
-}
+"use client"; import ThemeToggle from "./ThemeToggle";
+export default function Header({ name, role }: { name: string; role: string }) { const logout = async () => { await fetch("/api/auth/logout", { method: "POST" }); location.href = "/login"; }; return <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0" }}><div><strong style={{ fontSize: 20 }}>Calling CRM</strong><div style={{ color: "var(--muted)", fontSize: 13 }}>{name} • {role}</div></div><div style={{ display: "flex", gap: 8 }}><ThemeToggle /><button className="ghost" onClick={logout}>Logout</button></div></header>; }

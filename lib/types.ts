@@ -1,3 +1,9 @@
-export type Status = "New" | "Called" | "Interested" | "Follow-up" | "Not Interested";
-export type Lead = { id: string; name: string; phone: string; status: Status; note: string; createdAt: number };
-export const STATUSES: Status[] = ["New", "Called", "Interested", "Follow-up", "Not Interested"];
+export type Role = "admin" | "caller";
+export type UserStatus = "active" | "suspended";
+export type Presence = "Online" | "On-Call" | "Idle" | "Offline";
+export type Disposition = "Interested" | "Not Interested" | "Call Back Later" | "Switched Off" | "Wrong Number" | "RNR" | "Deal Closed";
+export type User = { id: string; loginId: string; passwordHash: string; name: string; role: Role; status: UserStatus; quota: number; createdAt: number; loginAt?: number; logoutAt?: number; lastSeen?: number; presence: Presence };
+export type Lead = { id: string; name: string; phone: string; campaign: string; status: Disposition | "New"; assignedTo?: string; callbackAt?: number; createdAt: number };
+export type CallLog = { id: string; leadId: string; callerId: string; disposition: Disposition; remarks: string; durationSec: number; recordingName?: string; recordingUrl?: string; callbackAt?: number; createdAt: number };
+export const DISPOSITIONS: Disposition[] = ["Interested", "Not Interested", "Call Back Later", "Switched Off", "Wrong Number", "RNR", "Deal Closed"];
+export type Session = { userId: string; role: Role; loginId: string; name: string };

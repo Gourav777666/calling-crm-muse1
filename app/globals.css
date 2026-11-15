@@ -1,2 +1,6 @@
-* { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, sans-serif; background: #fafafa; color: #111; }
+:root{--bg:#FFFFFF;--card:#F8FAFC;--surface:#FFFFFF;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--accent:#2563EB}
+[data-theme="dark"]{--bg:#121212;--card:#1E1E1E;--surface:#1E1E1E;--text:#F8FAFC;--muted:#A1A1AA;--border:#333333;--accent:#60A5FA}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text)}
+input,select,textarea,button{font:inherit}input,select,textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9px 10px}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 14px;cursor:pointer}button.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px}

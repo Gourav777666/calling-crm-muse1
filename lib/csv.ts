@@ -1,0 +1,3 @@
+export const parseCsv = (text: string) => text.trim().split(/\r?\n/).slice(1).map(l => { const [name, phone, campaign] = l.split(",").map(s => s?.trim() || ""); return { name, phone: phone.replace(/\D/g, ""), campaign: campaign || "General" }; }).filter(r => r.name && r.phone);
+export const toCsv = (rows: Record<string, unknown>[]) => { if (!rows.length) return ""; const keys = Object.keys(rows[0]); return [keys.join(","), ...rows.map(r => keys.map(k => `"${String(r[k] ?? "").replace(/"/g, '""')}"`).join(","))].join("\n"); };
+export const downloadCsv = (name: string, text: string) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" })); a.download = name; a.click(); };

@@ -1,14 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLeads, addLead, updateStatus, deleteLead } from "@/lib/store";
-export async function GET() { return NextResponse.json(getLeads()); }
-export async function POST(req: Request) {
-  const { name, phone, note } = await req.json();
-  if (!name?.trim() || !phone?.trim()) return NextResponse.json({ error: "Name and phone required" }, { status: 400 });
-  return NextResponse.json(addLead(name.trim(), phone.trim(), note?.trim() || ""), { status: 201 });
-}
-export async function PATCH(req: Request) {
-  const { id, status } = await req.json(); updateStatus(id, status); return NextResponse.json({ ok: true });
-}
-export async function DELETE(req: Request) {
-  const { id } = await req.json(); deleteLead(id); return NextResponse.json({ ok: true });
-}
+import { getSession } from "@/lib/auth"; import { db, newId } from "@/lib/db";
+export async function GET() { const s = await getSession(); if (!s) return NextResponse.json([], { status: 401 }); return NextResponse.json(s.role === "admin" ? db.leads : db.leads.filter(l => l.assignedTo === s.userId)); }
+export async function POST(req: Request) { const s = await getSession(); if (!s) return NextResponse.json({}, { status: 401 }); const { name, phone, campaign, assignedTo } = await req.json(); const clean = String(phone || "").replace(/\D/g, ""); if (!name || !clean) return NextResponse.json({ error: "Name/phone required" }, { status: 400 }); if (db.leads.some(l => l.phone === clean)) return NextResponse.json({ error: "Duplicate number" }, { status: 409 }); const lead = { id: newId(), name, phone: clean, campaign: campaign || "General", status: "New" as const, assignedTo, createdAt: Date.now() }; db.leads.unshift(lead); return NextResponse.json(lead, { status: 201 }); }
+export async function PATCH(req: Request) { const s = await getSession(); if (s?.role !== "admin") return NextResponse.json({}, { status: 403 }); const { id, assignedTo } = await req.json(); const l = db.leads.find(x => x.id === id); if (l) l.assignedTo = assignedTo; return NextResponse.json({ ok: true }); }
