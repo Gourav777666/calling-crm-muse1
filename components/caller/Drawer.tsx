@@ -1,6 +1,6 @@
-"use client"; import ThemeToggle from "@/components/ThemeToggle"; import LogoutButton from "@/components/ui/LogoutButton"; import { initials } from "@/lib/campaign"; import type { CallLog } from "@/lib/types";
+"use client"; import ThemeList from "@/components/ThemeList"; import LogoutButton from "@/components/ui/LogoutButton"; import { initials } from "@/lib/campaign"; import type { CallLog } from "@/lib/types";
 // ☰ Slide-in drawer: saare extra features ek jagah, front screen saaf
-export default function Drawer({ open, onClose, me, logs, leads, go, onExport }: { open: boolean; onClose: () => void; me: any; logs: CallLog[]; leads: any[]; go: (v: string) => void; onExport: () => void }) {
+export default function Drawer({ open, onClose, me, logs, leads, go, onExport, onSync }: { open: boolean; onClose: () => void; me: any; logs: CallLog[]; leads: any[]; go: (v: string) => void; onExport: () => void; onSync: () => void }) {
   const due = (leads || []).filter((l: any) => l.callbackAt && l.callbackAt <= Date.now() + 3600000).length;
   const today = logs.filter(l => new Date(l.createdAt).toDateString() === new Date().toDateString()); const talked = today.filter(l => !["RNR", "Switched Off", "Wrong Number"].includes(l.disposition)).length;
   const item = { display: "flex", gap: 10, alignItems: "center", width: "100%", textAlign: "left", padding: "13px 12px", background: "none", color: "var(--text)", boxShadow: "none", fontWeight: 500, fontSize: 15, borderRadius: 10 } as const;
@@ -18,7 +18,8 @@ export default function Drawer({ open, onClose, me, logs, leads, go, onExport }:
     <button style={item} onClick={() => nav("profile")}>👤 Profile</button>
     <button style={item} onClick={() => { onExport(); onClose(); }}>📥 Export My Report</button>
     <div style={{ borderTop: "1px solid var(--border)", marginTop: 6, paddingTop: 6 }}><button style={item} onClick={() => nav("settings")}>⚙️ Settings</button><button style={item} onClick={() => nav("help")}>❓ Help & Support</button><button style={item} onClick={() => nav("about")}>ℹ️ About App</button></div>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 12px", fontSize: 14, color: "var(--muted)" }}><span>🎨 Theme</span><ThemeToggle /></div>
+    <div style={{ padding: "6px 4px" }}><div style={{ fontSize: 12, fontWeight: 700, color: "var(--muted)", padding: "4px 8px" }}>🎨 THEMES</div><ThemeList /></div>
+    <button style={item} onClick={() => { onSync(); onClose(); }}>📲 Phone Sync (Calls + Contacts)</button>
     <div style={{ marginTop: "auto" }}><LogoutButton full /></div>
   </aside></>;
 }

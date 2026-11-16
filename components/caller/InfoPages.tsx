@@ -1,8 +1,8 @@
-"use client"; import { useEffect, useState } from "react"; import ThemeToggle from "@/components/ThemeToggle";
+"use client"; import { useEffect, useState } from "react"; import ThemeList from "@/components/ThemeList";
 export function Settings() { const [gap, setGap] = useState("5"); useEffect(() => { setGap(localStorage.getItem("defaultGap") || "5"); }, []); const save = (v: string) => { setGap(v); localStorage.setItem("defaultGap", v); };
   return <div className="card" style={{ display: "grid", gap: 12, marginTop: 12 }}><strong>⚙️ Settings</strong>
   <label style={{ display: "grid", gap: 5, fontSize: 14 }}>Auto Dial default gap (seconds)<select value={gap} onChange={e => save(e.target.value)}>{[0, 3, 5, 10, 20].map(g => <option key={g} value={g}>{g}s</option>)}</select></label>
-  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14 }}><span>🎨 Theme</span><ThemeToggle /></div>
+  <div style={{ display: "grid", gap: 5 }}><span style={{ fontSize: 14 }}>🎨 Theme</span><ThemeList /></div>
   <div style={{ fontSize: 12, color: "var(--muted)" }}>Theme aur gap tumhare phone par save rehte hain.</div></div>; }
 export function Help() { return <div className="card" style={{ display: "grid", gap: 10, marginTop: 12 }}><strong>❓ Help & Support</strong>
   {["1. Queue me lead par bada 📞 Call button dabao — call lagegi.", "2. Call ke baad disposition zaroor bharo (Interested / RNR / Callback...).", "3. Auto Dial: upar Auto mode chuno, session setup karke Start — leads ek ke baad ek apne aap aayengi.", "4. Apna data add karna ho to ☰ menu → Upload Data (CSV/Excel).", "5. Kisi bhi number par direct call: neeche ⌨️ dialpad button.", "6. Callback due leads ☰ menu → Callbacks (Reminders) me dikhte hain."].map(t => <div key={t} style={{ fontSize: 14 }}>{t}</div>)}

@@ -14,6 +14,10 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
+import android.database.Cursor;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
+import com.getcapacitor.JSArray;
 import java.io.File;
 
 // Calling CRM native bridge:
@@ -22,7 +26,8 @@ import java.io.File;
 // - fetchLatest: common call-recording folders se latest recording file (jahan OEM/Android block na kare)
 @CapacitorPlugin(name = "CallPlugin", permissions = {
   @Permission(alias = "call", strings = { Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE }),
-  @Permission(alias = "audio", strings = { Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE })
+  @Permission(alias = "audio", strings = { Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE }),
+  @Permission(alias = "sync", strings = { Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_CONTACTS })
 })
 public class CallPlugin extends Plugin {
   private PluginCall pendingCall; private String pendingPhone; private boolean wasOffhook = false;
@@ -48,6 +53,24 @@ public class CallPlugin extends Plugin {
       if (state == TelephonyManager.CALL_STATE_OFFHOOK) wasOffhook = true;
       if (state == TelephonyManager.CALL_STATE_IDLE && wasOffhook) { wasOffhook = false; JSObject d = new JSObject(); notifyListeners("callEnded", d); }
     } }, PhoneStateListener.LISTEN_CALL_STATE);
+  }
+  // Phone Sync: device call log + contacts padh kar web ko deta hai (permission pehle maangta hai)
+  @PluginMethod public void syncPhoneData(PluginCall call) {
+    if (getPermissionState("sync") != PermissionState.GRANTED) { requestPermissionForAlias("sync", call, "syncPermCallback"); return; }
+    readSync(call);
+  }
+  @PermissionCallback private void syncPermCallback(PluginCall call) {
+    if (getPermissionState("sync") == PermissionState.GRANTED) readSync(call);
+    else call.reject("Call log / Contacts permission denied - stats sync ke liye allow karo");
+  }
+  private void readSync(PluginCall call) {
+    long since = call.getLong("since", 0L);
+    JSObject out = new JSObject(); JSArray calls = new JSArray(); JSArray contacts = new JSArray();
+    try { Cursor c = getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, new String[]{ CallLog.Calls.NUMBER, CallLog.Calls.DATE, CallLog.Calls.DURATION, CallLog.Calls.TYPE, CallLog.Calls.CACHED_NAME }, CallLog.Calls.DATE + " > ?", new String[]{ String.valueOf(since) }, CallLog.Calls.DATE + " ASC");
+      if (c != null) { while (c.moveToNext()) { JSObject r = new JSObject(); r.put("phone", c.getString(0)); r.put("at", c.getLong(1)); r.put("durationSec", c.getLong(2)); r.put("type", c.getInt(3)); r.put("name", c.getString(4)); calls.put(r); if (calls.length() >= 500) break; } c.close(); } } catch (Exception e) { }
+    try { Cursor c = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String[]{ ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER }, null, null, null);
+      if (c != null) { while (c.moveToNext()) { JSObject r = new JSObject(); r.put("name", c.getString(0)); r.put("phone", c.getString(1)); contacts.put(r); if (contacts.length() >= 1000) break; } c.close(); } } catch (Exception e) { }
+    out.put("calls", calls); out.put("contacts", contacts); call.resolve(out);
   }
   @PluginMethod public void start(PluginCall call) { call.resolve(); } // Recording stock dialer/OEM recorder karta hai; fetchLatest usi file ko attach karta hai
   @PluginMethod public void fetchLatest(PluginCall call) {
