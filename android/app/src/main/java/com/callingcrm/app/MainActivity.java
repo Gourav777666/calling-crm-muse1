@@ -11,8 +11,8 @@ public class MainActivity extends BridgeActivity {
     registerPlugin(CallPlugin.class);
     super.onCreate(savedInstanceState);
     // Status bar / system nav se overlap fix: WebView ko system bars ke insets jitna padding do
-    getWindow().setStatusBarColor(0xFF4F46E5);
-    getWindow().setNavigationBarColor(0xFF121212);
+    getWindow().setStatusBarColor(0xFF4A3222);
+    getWindow().setNavigationBarColor(0xFF1E150F);
     WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
     View webView = getBridge().getWebView();
     ViewCompat.setOnApplyWindowInsetsListener(webView, (v, insets) -> {
