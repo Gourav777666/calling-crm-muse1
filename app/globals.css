@@ -50,10 +50,12 @@ body{padding-top:env(safe-area-inset-top)}
   --green:#3FA46A; --red:#D9534A; --amber:#D99A2B; --grey:#7C8DA6;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px -12px rgba(0,0,0,.7); --shadow-lg:0 12px 40px -12px rgba(0,0,0,.8);
 }
-/* Standard Light theme (white wali classic CRM look) */
+/* Standard Light theme (white base, vibrant royal blue -> violet) */
 [data-theme="standard"]{
-  --bg:#FFFFFF; --card:#FAFAFA; --surface:#FFFFFF; --text:#1A1D21; --muted:#68707A; --border:#E3E6EA;
-  --accent:#334155; --accent2:#64748B; --grad:linear-gradient(135deg,#334155,#64748B);
+  --bg:#FFFFFF; --card:#F6F9FF; --surface:#FFFFFF; --text:#16233A; --muted:#5B6B82; --border:#DCE6F5;
+  --accent:#2563EB; --accent2:#7C3AED; --grad:linear-gradient(135deg,#2563EB,#0EA5E9 50%,#7C3AED);
   --green:#16A34A; --red:#DC2626; --amber:#D97706; --grey:#64748B;
-  --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12); --shadow-lg:0 12px 40px -12px rgba(15,23,42,.25);
+  --shadow:0 1px 2px rgba(37,99,235,.06),0 8px 24px -12px rgba(37,99,235,.18); --shadow-lg:0 12px 40px -12px rgba(37,99,235,.3);
 }
+[data-theme="standard"] button{box-shadow:0 4px 14px -6px rgba(37,99,235,.5)}
+[data-theme="standard"] .sidebar a.active{box-shadow:0 4px 14px -6px rgba(37,99,235,.5)}
