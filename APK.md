@@ -41,3 +41,4 @@ Sach: browser/PWA se direct SIM call aur auto-recording possible nahi hai — ye
 - Permissions (AndroidManifest + runtime): CALL_PHONE, READ_PHONE_STATE, READ_MEDIA_AUDIO, READ_EXTERNAL_STORAGE (purane Android ke liye), RECORD_AUDIO.
 - Debug APK build: JDK 21 + Android SDK (platform 35, build-tools 35/34) ke saath `cd android && ./gradlew assembleDebug` → `android/app/build/outputs/apk/debug/app-debug.apk`
 - Install: APK file phone me bhejo → tap karo → "Install unknown apps" allow karo → Install. Pehli call par CALL_PHONE + audio permissions allow karna.
+Note: GitHub par android project ke text/code files push hain. Launcher/splash PNG aur gradle-wrapper.jar jaise binary files GitHub push tool (UTF-8 snapshot) se nahi ja sakte — ye Capacitor ke default generated files hain, `npx cap add android` ya Android Studio kholne par dobara ban jate hain. Taiyaar APK is chat me di gayi Calling-CRM.apk file hi hai.
