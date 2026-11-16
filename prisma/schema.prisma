@@ -1,7 +1,53 @@
-// Production DB - run: npx prisma migrate dev ; set DATABASE_URL in Vercel
-generator client { provider = "prisma-client-js" }
-datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
-enum Role { admin caller }
-model User { id String @id @default(cuid()); loginId String @unique; passwordHash String; name String; role Role; status String @default("active"); quota Int @default(50); loginAt DateTime?; logoutAt DateTime?; lastSeen DateTime?; presence String @default("Offline"); createdAt DateTime @default(now()); leads Lead[]; logs CallLog[] }
-model Lead { id String @id @default(cuid()); name String; phone String @unique; campaign String @default("General"); status String @default("New"); assignedTo String?; source String @default("Admin"); uploadedById String?; deletedByCallerAt DateTime?; attempts Int @default(0); lastCallAt DateTime?; lastDisposition String?; talked Boolean @default(false); assignee User? @relation(fields: [assignedTo], references: [id]); callbackAt DateTime?; createdAt DateTime @default(now()); logs CallLog[] }
-model CallLog { id String @id @default(cuid()); lead Lead @relation(fields: [leadId], references: [id]); leadId String; caller User @relation(fields: [callerId], references: [id]); callerId String; disposition String; remarks String @default(""); durationSec Int @default(0); recordingName String?; recordingUrl String?; callbackAt DateTime?; createdAt DateTime @default(now()) }
+// Calling CRM - Postgres (Neon). Shapes lib/types.ts se match karte hain.
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id           String    @id
+  loginId      String    @unique
+  passwordHash String
+  name         String
+  role         String
+  status       String    @default("active")
+  quota        Int       @default(50)
+  presence     String    @default("Offline")
+  loginAt      DateTime?
+  logoutAt     DateTime?
+  lastSeen     DateTime?
+  createdAt    DateTime
+}
+model Lead {
+  id                String    @id
+  name              String
+  phone             String    @unique
+  campaign          String    @default("General")
+  status            String    @default("New")
+  assignedTo        String?
+  callbackAt        DateTime?
+  source            String    @default("Admin")
+  uploadedById      String?
+  uploadedByName    String?
+  deletedByCallerAt DateTime?
+  attempts          Int       @default(0)
+  lastCallAt        DateTime?
+  lastDisposition   String?
+  talked            Boolean   @default(false)
+  history           Json      @default("[]")
+  createdAt         DateTime
+}
+model CallLog {
+  id            String    @id
+  leadId        String
+  callerId      String
+  disposition   String
+  remarks       String    @default("")
+  durationSec   Int       @default(0)
+  recordingName String?
+  recordingUrl  String?
+  callbackAt    DateTime?
+  createdAt     DateTime
+}

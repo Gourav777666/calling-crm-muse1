@@ -1,0 +1,6 @@
+// Analytics date-range presets (Callyzer style): Today/Yesterday/Week/Month/Year/Custom/All
+export type RangeKey = "today" | "yesterday" | "week" | "month" | "year" | "custom" | "all";
+export const RANGES: { id: RangeKey; label: string }[] = [{ id: "today", label: "Today" }, { id: "yesterday", label: "Yesterday" }, { id: "week", label: "This Week" }, { id: "month", label: "This Month" }, { id: "year", label: "This Year" }, { id: "custom", label: "Custom" }, { id: "all", label: "All Time" }];
+export const rangeToQuery = (key: RangeKey, custom?: { from: string; to: string }) => { const now = new Date(); const start = new Date(now); start.setHours(0, 0, 0, 0); let from = 0, to = Date.now();
+  if (key === "today") from = start.getTime(); else if (key === "yesterday") { from = start.getTime() - 86400000; to = start.getTime() - 1; } else if (key === "week") { const d = new Date(start); d.setDate(d.getDate() - d.getDay()); from = d.getTime(); } else if (key === "month") from = new Date(now.getFullYear(), now.getMonth(), 1).getTime(); else if (key === "year") from = new Date(now.getFullYear(), 0, 1).getTime(); else if (key === "custom" && custom?.from) { from = new Date(custom.from).getTime(); to = custom.to ? new Date(custom.to).getTime() + 86399999 : Date.now(); }
+  return key === "all" ? "" : `from=${from}&to=${to}`; };

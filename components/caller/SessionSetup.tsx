@@ -1,7 +1,7 @@
-"use client"; import { useState } from "react";
+"use client"; import { useEffect, useState } from "react";
 export type SessFilter = "all" | "new" | "callbacks" | string;
 export default function SessionSetup({ camps, counts, onStart }: { camps: string[]; counts: Record<string, number>; onStart: (f: SessFilter, gap: number) => void }) {
-  const [f, setF] = useState<SessFilter>("all"); const [gap, setGap] = useState(5);
+  const [f, setF] = useState<SessFilter>("all"); const [gap, setGap] = useState(5); useEffect(() => { const g = Number(localStorage.getItem("defaultGap")); if ([0, 3, 5, 10, 20].includes(g)) setGap(g); }, []);
   const total = counts[f] || 0;
   return <div className="card" style={{ display: "grid", gap: 12 }}>
     <strong style={{ fontSize: 16 }}>🚀 Auto-Dial Session</strong>

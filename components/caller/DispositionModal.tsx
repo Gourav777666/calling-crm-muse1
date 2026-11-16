@@ -1,9 +1,9 @@
 "use client"; import { useEffect, useState } from "react"; import { DISPOSITIONS, type Disposition, type Lead } from "@/lib/types"; import { queueOffline } from "@/lib/offline"; import { fetchLatestRecording, isNative } from "@/lib/native";
-export default function DispositionModal({ lead, durationSec = 0, onClose, onDone }: { lead: Lead; durationSec?: number; onClose: () => void; onDone: (disp: string) => void }) {
+export default function DispositionModal({ lead, durationSec = 0, onClose, onDone, adhoc }: { lead: Lead; durationSec?: number; onClose: () => void; onDone: (disp: string) => void; adhoc?: boolean }) {
   const [disp, setDisp] = useState<Disposition>("Interested"); const [remarks, setRemarks] = useState(""); const [when, setWhen] = useState(""); const [rec, setRec] = useState<File | null>(null); const [autoRec, setAutoRec] = useState<{ name: string; url: string } | null>(null); const [recNote, setRecNote] = useState("");
   useEffect(() => { (async () => { const r = await fetchLatestRecording(); if (r) { setAutoRec(r); setRecNote(`Auto-recording attach ho gayi: ${r.name}`); } else setRecNote(isNative() ? "Auto-recording is device par OS ne block ki / file nahi mili — chaaho to neeche upload kar do." : "Web par auto-recording nahi hoti — recording ho to neeche upload kar do. APK me auto-attach hota hai jahan OS support kare."); })(); }, []);
   const save = async () => {
-    const body = { leadId: lead.id, disposition: disp, remarks, durationSec, callbackAt: disp === "Call Back Later" && when ? new Date(when).getTime() : undefined, recordingName: autoRec?.name || rec?.name, recordingUrl: autoRec?.url || (rec ? URL.createObjectURL(rec) : undefined) };
+    const body = { leadId: adhoc ? undefined : lead.id, ...(adhoc ? { adhocPhone: lead.phone, adhocName: lead.name } : {}), disposition: disp, remarks, durationSec, callbackAt: disp === "Call Back Later" && when ? new Date(when).getTime() : undefined, recordingName: autoRec?.name || rec?.name, recordingUrl: autoRec?.url || (rec ? URL.createObjectURL(rec) : undefined) };
     try { const r = await fetch("/api/calls", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); if (!r.ok) throw 0; } catch { queueOffline(body); alert("Offline: disposition queue me save ho gaya, net aate hi sync hoga."); }
     onDone(disp); onClose();
   };
