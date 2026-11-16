@@ -6,7 +6,7 @@ export default function Dialpad({ onDone }: { onDone: () => void }) {
   const call = () => { if (num.replace(/\D/g, "").length < 10) return; dialNative(num); setCalled(true); };
   const fakeLead: Lead = { id: "", name: name || num, phone: num.replace(/\D/g, "").slice(-10), campaign: "Dialpad", status: "New", createdAt: Date.now(), history: [] };
   return <>
-  <button onClick={() => setOpen(true)} aria-label="Dialpad" style={{ position: "fixed", right: 16, bottom: "calc(92px + env(safe-area-inset-bottom))", zIndex: 60, width: 58, height: 58, borderRadius: "50%", fontSize: 24, display: "grid", placeItems: "center", boxShadow: "var(--shadow-lg)" }}>⌨️</button>
+  <button onClick={() => setOpen(true)} aria-label="Dialpad" style={{ position: "fixed", right: 16, bottom: 92, zIndex: 60, width: 58, height: 58, borderRadius: "50%", fontSize: 24, display: "grid", placeItems: "center", boxShadow: "var(--shadow-lg)" }}>⌨️</button>
   {open && <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", zIndex: 75, display: "grid", placeItems: "end center" }} onClick={() => setOpen(false)}>
     <div className="card" onClick={e => e.stopPropagation()} style={{ width: "100%", maxWidth: 380, borderRadius: "20px 20px 0 0", padding: 18, display: "grid", gap: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><strong>⌨️ Dialpad</strong><button className="ghost" onClick={() => setOpen(false)} style={{ padding: "6px 11px" }}>✕</button></div>

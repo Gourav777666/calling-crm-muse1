@@ -1,2 +1,3 @@
-"use client"; import { useEffect } from "react"; import { applyTheme } from "@/lib/theme";
-export default function Pwa() { useEffect(() => { applyTheme(localStorage.getItem("theme") || "light"); if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {}); }, []); return null; }
+"use client"; import { useEffect } from "react"; import { applyTheme } from "@/lib/theme"; import { isNative } from "@/lib/native";
+// Native app me Capacitor margins screen ko bars ke andar rakhte hain — waha CSS safe-area padding double gap bana deti hai, isliye html.native par wo padding band rehti hai (globals.css). Browser/PWA me env() padding hi overlap rokti hai.
+export default function Pwa() { useEffect(() => { applyTheme(localStorage.getItem("theme") || "light"); if (isNative()) document.documentElement.classList.add("native"); if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {}); }, []); return null; }

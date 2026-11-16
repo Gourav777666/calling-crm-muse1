@@ -41,8 +41,8 @@ a{color:var(--accent)}
 .pulse{animation:pulseB 1.2s ease-in-out infinite}
 
 /* Safe areas (notch / status bar / system nav) */
-body{padding-top:env(safe-area-inset-top)}
-.bottomnav{padding-bottom:env(safe-area-inset-bottom)}
+html:not(.native) body{padding-top:env(safe-area-inset-top)}
+html:not(.native) .bottomnav{padding-bottom:env(safe-area-inset-bottom)}
 /* Navy Charcoal theme */
 [data-theme="navy"]{
   --bg:#0E1116; --card:#1C2129; --surface:#161A21; --text:#EDF2F8; --muted:#9FB0C3; --border:#2A3444;
