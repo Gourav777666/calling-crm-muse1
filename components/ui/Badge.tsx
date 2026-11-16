@@ -1,0 +1,2 @@
+export const badgeColor = (kind: "talked" | "not" | "new" | "amber" | "info") => kind === "talked" ? "var(--green)" : kind === "not" ? "var(--red)" : kind === "amber" ? "var(--amber)" : kind === "info" ? "var(--accent2)" : "var(--grey)";
+export default function Badge({ kind, children }: { kind: "talked" | "not" | "new" | "amber" | "info"; children: React.ReactNode }) { return <span className="pill" style={{ background: badgeColor(kind) }}>{children}</span>; }

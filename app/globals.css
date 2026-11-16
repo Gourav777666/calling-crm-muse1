@@ -1,6 +1,38 @@
-:root{--bg:#FFFFFF;--card:#F8FAFC;--surface:#FFFFFF;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--accent:#2563EB}
-[data-theme="dark"]{--bg:#121212;--card:#1E1E1E;--surface:#1E1E1E;--text:#F8FAFC;--muted:#A1A1AA;--border:#333333;--accent:#60A5FA}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text)}
-input,select,textarea,button{font:inherit}input,select,textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9px 10px}
-button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 14px;cursor:pointer}button.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px}
+/* ===== Calling CRM Design System (single source) ===== */
+:root{
+  --bg:#F6F7FB; --card:#FFFFFF; --surface:#FFFFFF; --text:#0F172A; --muted:#64748B; --border:#E6E8F0;
+  --accent:#4F46E5; --accent2:#2563EB; --grad:linear-gradient(135deg,#4F46E5,#2563EB);
+  --green:#16A34A; --red:#DC2626; --amber:#D97706; --grey:#64748B;
+  --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12);
+  --shadow-lg:0 12px 40px -12px rgba(15,23,42,.25);
+  --r:16px; --r-sm:10px; --pad:16px;
+}
+[data-theme="dark"]{
+  --bg:#121212; --card:#1E1E1E; --surface:#1E1E1E; --text:#F8FAFC; --muted:#A1A1AA; --border:#333333;
+  --accent:#818CF8; --accent2:#60A5FA; --grad:linear-gradient(135deg,#6366F1,#3B82F6);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6); --shadow-lg:0 12px 40px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0} h2,.sec-title{font-size:17px;font-weight:700;letter-spacing:-.01em}
+input,select,textarea,button{font:inherit}
+input,select,textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;outline:none;transition:border-color .15s, box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%, transparent)}
+button{background:var(--grad);color:#fff;border:0;border-radius:var(--r-sm);padding:10px 16px;cursor:pointer;font-weight:600;box-shadow:0 4px 14px -6px rgba(79,70,229,.5);transition:transform .1s, opacity .15s}
+button:hover{opacity:.94} button:active{transform:scale(.98)} button:disabled{opacity:.5;cursor:not-allowed}
+button.ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none;font-weight:500}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:var(--pad);box-shadow:var(--shadow)}
+table th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 6px;border-bottom:2px solid var(--border)}
+table td{padding:8px 6px} table tbody tr:hover{background:color-mix(in srgb,var(--accent) 5%, transparent)}
+a{color:var(--accent)}
+/* layout helpers */
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.sidebar a{padding:10px 12px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;font-size:14px;font-weight:500}
+.sidebar a:hover{background:color-mix(in srgb,var(--accent) 8%, transparent)}
+.sidebar a.active{background:var(--grad);color:#fff;box-shadow:0 4px 14px -6px rgba(79,70,229,.5)}
+.brand{font-size:19px;font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:50;box-shadow:0 -4px 20px -8px rgba(15,23,42,.15)}
+.bottomnav button{flex:1;background:none;box-shadow:none;color:var(--muted);border-radius:0;padding:10px 2px;font-size:11px;font-weight:600;display:grid;gap:2px;justify-items:center}
+.bottomnav button.active{color:var(--accent)}
+.stickybar{position:sticky;top:0;z-index:40;background:var(--bg);padding:8px 0}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;color:#fff}
