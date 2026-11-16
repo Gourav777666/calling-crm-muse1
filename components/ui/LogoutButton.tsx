@@ -1,0 +1,3 @@
+"use client"; import { useState } from "react";
+// Asli <a> link hai: click par "Logging out..." dikhta hai, JS dead ho to bhi href se logout ho jayega
+export default function LogoutButton({ full }: { full?: boolean }) { const [txt, setTxt] = useState("🚪 Logout"); return <a href="/api/auth/logout" onClick={() => setTxt("Logging out...")} style={{ display: "block", textAlign: "center", background: "var(--red)", color: "#fff", fontWeight: 700, padding: "12px 16px", borderRadius: "var(--r-sm)", textDecoration: "none", boxShadow: "0 4px 14px -6px rgba(220,38,38,.55)", width: full ? "100%" : undefined }}>{txt}</a>; }
