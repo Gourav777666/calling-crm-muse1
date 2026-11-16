@@ -1,0 +1,9 @@
+{
+	"appId": "com.callingcrm.app",
+	"appName": "Calling CRM",
+	"webDir": "public",
+	"server": {
+		"url": "https://calling-crm-muse1-nine.vercel.app",
+		"cleartext": false
+	}
+}

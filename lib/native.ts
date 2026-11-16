@@ -11,5 +11,5 @@ export const dialNative = (phone: string): "native" | "tel" => {
 export const NATIVE_PERMISSIONS = ["CALL_PHONE", "READ_PHONE_STATE", "READ_MEDIA_AUDIO", "RECORD_AUDIO"] as const;
 // Auto-recording: native side har call par recording on rakhta hai jahan OS support kare; yaha latest file fetch hoti hai.
 // OS block kare to null milega - UI graceful note dikhayegi, web par manual upload rahega.
-export const startAutoRecording = () => { try { window.AndroidBridge?.startRecording?.(); window.Capacitor?.Plugins?.CallRecorder?.start?.(); } catch {} };
-export const fetchLatestRecording = async (): Promise<{ name: string; url: string } | null> => { try { return await window.AndroidBridge?.fetchLatestRecording?.() || await window.Capacitor?.Plugins?.CallRecorder?.fetchLatest?.() || null; } catch { return null; } };
+export const startAutoRecording = () => { try { window.AndroidBridge?.startRecording?.(); window.Capacitor?.Plugins?.CallPlugin?.start?.(); } catch {} };
+export const fetchLatestRecording = async (): Promise<{ name: string; url: string } | null> => { try { return await window.AndroidBridge?.fetchLatestRecording?.() || await window.Capacitor?.Plugins?.CallPlugin?.fetchLatest?.() || null; } catch { return null; } };
