@@ -6,7 +6,7 @@ export const dialNative = (phone: string): "native" | "tel" => {
   const clean = phone.replace(/\s/g, "");
   if (window.AndroidBridge?.directCall) { window.AndroidBridge.directCall(clean); return "native"; } // ACTION_CALL, no dialpad
   if (window.Capacitor?.Plugins?.CallPlugin) { window.Capacitor.Plugins.CallPlugin.directCall({ phone: clean }); return "native"; }
-  window.location.href = `tel:${clean}`; return "tel"; // web fallback
+  return "tel"; // web: koi auto-navigation nahi (tel: jump page ko dead kar deta tha) - InCallScreen me tel: link button milega
 };
 export const NATIVE_PERMISSIONS = ["CALL_PHONE", "READ_PHONE_STATE", "READ_MEDIA_AUDIO", "RECORD_AUDIO"] as const;
 // Auto-recording: native side har call par recording on rakhta hai jahan OS support kare; yaha latest file fetch hoti hai.
