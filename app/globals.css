@@ -59,3 +59,5 @@ body{padding-top:env(safe-area-inset-top)}
 }
 [data-theme="standard"] button{box-shadow:0 4px 14px -6px rgba(37,99,235,.5)}
 [data-theme="standard"] .sidebar a.active{box-shadow:0 4px 14px -6px rgba(37,99,235,.5)}
+.only-mobile{display:none}
+@media (max-width:760px){ .only-mobile{display:block} .adminwrap{grid-template-columns:1fr !important} .sidebar{position:fixed;left:0;top:0;z-index:90;width:250px;transform:translateX(-105%);transition:transform .28s ease} .sidebar.open{transform:none} }
