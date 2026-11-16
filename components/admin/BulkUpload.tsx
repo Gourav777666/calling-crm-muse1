@@ -1,6 +1,6 @@
 "use client"; import { useState } from "react"; import { parseCsvDetailed, type ParsedCsv } from "@/lib/csv";
 // Upload flow: File chuno -> Preview -> Distribution chuno -> "Upload & Distribute" Submit -> Summary
-export default function BulkUpload({ users, onDone }: { users: any[]; onDone: () => void }) {
+export default function BulkUpload({ users, leads = [], onDone }: { users: any[]; leads?: any[]; onDone: () => void }) {
   const [parsed, setParsed] = useState<ParsedCsv | null>(null); const [fileName, setFileName] = useState(""); const [mode, setMode] = useState("round-robin"); const [to, setTo] = useState(""); const [defCamp, setDefCamp] = useState(""); const [busy, setBusy] = useState(false); const [result, setResult] = useState<any>(null);
   const pick = async (f: File) => { setResult(null); setFileName(f.name); setParsed(parseCsvDetailed(await f.text())); };
   const submit = async () => { if (!parsed) return; setBusy(true); const r = await fetch("/api/leads/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ leads: parsed.rows, mode, assignedTo: to, defaultCampaign: defCamp }) }); setResult(await r.json()); setBusy(false); setParsed(null); onDone(); };

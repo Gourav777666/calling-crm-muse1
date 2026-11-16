@@ -1,0 +1,2 @@
+// Round-robin preview: hamesha sabse kam load wale caller ko agli lead (server ke nextCallerId jaisa hi logic)
+export function simulateSplit(loads: Record<string, number>, callerIds: string[], n: number): Record<string, number> { const cur = { ...loads }; const out: Record<string, number> = {}; callerIds.forEach(id => out[id] = 0); for (let i = 0; i < n; i++) { let best = callerIds[0]; for (const id of callerIds) if ((cur[id] || 0) < (cur[best] || 0)) best = id; cur[best] = (cur[best] || 0) + 1; out[best]++; } return out; }

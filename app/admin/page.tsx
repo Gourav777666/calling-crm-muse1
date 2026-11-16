@@ -6,7 +6,7 @@ export default function Admin() { const [me, setMe] = useState<any>(null); const
   <main style={{ padding: "0 20px 40px", display: "grid", gap: 16, minWidth: 0 }}><Header name={me.name} role="Super Admin" />
   <section id="dashboard" style={{ display: "grid", gap: 16 }}><TeamMonitor users={users} logs={logs} /></section>
   <section id="analytics"><Analytics users={users} /></section>
-  <section id="upload"><BulkUpload users={users} onDone={load} /></section>
+  <section id="upload"><BulkUpload users={users} leads={leads} onDone={load} /></section>
   <section id="distribution" style={{ display: "grid", gap: 6 }}><div style={{ fontSize: 13, color: "var(--muted)" }}>Manual Assign: neeche leads select karo → caller chuno → Bulk Assign dabao. Single lead ka caller usi line ke dropdown se badlo.</div><Distribution leads={leads} users={users} onDone={load} /></section>
   <section id="logs"><CallLogs logs={logs} users={users} /></section>
   <section id="callers"><CallerManager users={users} onDone={load} /></section>
