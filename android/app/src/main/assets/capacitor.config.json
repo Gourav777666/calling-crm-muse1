@@ -5,5 +5,8 @@
 	"server": {
 		"url": "https://calling-crm-muse1-nine.vercel.app",
 		"cleartext": false
+	},
+	"android": {
+		"adjustMarginsForEdgeToEdge": "force"
 	}
 }
