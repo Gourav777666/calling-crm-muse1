@@ -1,1 +1,3 @@
 export const waLink = (phone: string, name: string) => `https://wa.me/91${phone.replace(/\D/g, "").slice(-10)}?text=${encodeURIComponent(`Hi ${name}, thank you for speaking with us. Sharing details as discussed. Please let us know if you need any help.`)}`;
+export const smsLink = (phone: string, name: string) => `sms:+91${phone.replace(/\D/g, "").slice(-10)}?&body=${encodeURIComponent(`Hi ${name}, thank you for speaking with us. Sharing details as discussed. Please let us know if you need any help.`)}`;
+export const shareText = (lead: { name: string; phone: string; campaign: string; status: string }) => `Lead: ${lead.name}\nPhone: ${lead.phone}\nCampaign: ${lead.campaign}\nStatus: ${lead.status}`;

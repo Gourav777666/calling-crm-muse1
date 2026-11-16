@@ -5,6 +5,6 @@ export async function POST(req: Request) {
   const s = await getSession(); if (!s) return NextResponse.json({}, { status: 401 });
   const { leadId, disposition, remarks, durationSec, recordingName, recordingUrl, callbackAt } = await req.json();
   const log = { id: newId(), leadId, callerId: s.userId, disposition, remarks: remarks || "", durationSec: durationSec || 0, recordingName, recordingUrl, callbackAt: callbackAt || undefined, createdAt: Date.now() };
-  db.logs.unshift(log); const lead = db.leads.find(l => l.id === leadId); if (lead) { lead.status = disposition; lead.callbackAt = callbackAt || undefined; }
+  db.logs.unshift(log); const lead = db.leads.find(l => l.id === leadId); if (lead) { lead.status = disposition; lead.callbackAt = callbackAt || undefined; lead.attempts = (lead.attempts || 0) + 1; lead.lastCallAt = log.createdAt; lead.lastDisposition = disposition; lead.talked = ["Interested", "Not Interested", "Call Back Later", "Deal Closed"].includes(disposition); }
   return NextResponse.json(log, { status: 201 });
 }
