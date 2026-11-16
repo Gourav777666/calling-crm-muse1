@@ -38,3 +38,7 @@ a{color:var(--accent)}
 .pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:600;color:#fff}
 @keyframes pulseB{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 .pulse{animation:pulseB 1.2s ease-in-out infinite}
+
+/* Safe areas (notch / status bar / system nav) */
+body{padding-top:env(safe-area-inset-top)}
+.bottomnav{padding-bottom:env(safe-area-inset-bottom)}
