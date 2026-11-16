@@ -18,3 +18,5 @@ See APK.md
 - **History + Recording:** caller ko My Call History tab (filters + recording play), lead timeline me calls + distribution history, admin master logs me filters. Auto-recording native hook har call par (jahan OS support kare auto-attach + play), OS block par graceful note, web par upload.
 - **UI:** campaign colours, avatar cards, analytics bar charts/funnel, bade call buttons, empty states. Light + Deep Charcoal themes.
 - Note: data abhi in-memory demo store par hai — real leads se pehle Postgres (prisma/schema.prisma ready) wala step baaki hai.
+
+<!-- deploy refresh: compact cards + safe-area (c4a23f3) -->
