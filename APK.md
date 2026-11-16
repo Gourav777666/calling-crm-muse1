@@ -12,3 +12,22 @@
    The web side hooks are already in lib/native.ts (dialNative, fetchLatestRecording, NATIVE_PERMISSIONS).
 7. npx cap sync android
 8. Open Android Studio: npx cap open android -> Build > Build APK(s), test on device with SIM.
+
+## v3: Direct Call Bridge (dialpad khole bina) + Auto Recording
+Web code (lib/native.ts) pehle native bridge dhoondhta hai, phir tel: fallback leta hai.
+Android native side par ye bridge banao (MainActivity / Capacitor plugin):
+
+```java
+// AndroidBridge.directCall - ACTION_CALL se seedha call, dialpad UI nahi khulta
+// Permission: CALL_PHONE (runtime permission pehle maango)
+@JavascriptInterface public void directCall(String phone) {
+  Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+  startActivity(i);
+}
+// startRecording: har call par device ka call-recording folder scan / recorder start
+// (OnePlus/Samsung stock recorder support par auto file milti hai; kuch OEM/OS block karte hain)
+// fetchLatestRecording: /storage/emulated/0/Recordings/Call recordings ki latest .mp3/.m4a/.amr file ka naam + file URL return karo
+```
+WebView me: webView.addJavascriptInterface(bridge, "AndroidBridge")
+Capacitor me: isi logic ko "CallPlugin.directCall" + "CallRecorder.start/fetchLatest" plugin methods me rakho.
+Sach: browser/PWA se direct SIM call aur auto-recording possible nahi hai — ye sirf APK native bridge se hoga, web par tel: + manual recording upload fallback hai.
